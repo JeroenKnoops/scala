@@ -1,5 +1,8 @@
 #!/bin/bash
 
+github_organization=$GITHUB_ORGANIZATION
+docker_organization=$DOCKER_ORGANIZATION
+
 if [ "$#" -lt 2 ]; then
   echo "You need to provide a directory with a Dockerfile in it and a tag."
   exit 1
@@ -21,13 +24,13 @@ echo "Building docker image: $builddir with tag: $basetag"
 echo "-------------------------------------------------------------------------"
 cd $builddir
 
-echo "https://github.com/philips-software/$project/tree/$commitsha" > REPO
+echo "https://github.com/$github_organization/$project/tree/$commitsha" > REPO
 
-docker build . -t philipssoftware/$basetag
+docker build . -t $docker_organization/$basetag
 while test ${#} -gt 0
 do
-  echo "Tagging philipssoftware/$basetag as philipssoftware/$1"
-  docker tag philipssoftware/$basetag philipssoftware/$1
+  echo "Tagging $docker_organization/$basetag as #docker_organization/$1"
+  docker tag $docker_organization/$basetag $docker_organization/$1
   shift
 done
 echo "============================================================================================"
